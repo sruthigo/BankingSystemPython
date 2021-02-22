@@ -1,0 +1,49 @@
+#create table AccountHolder(CustID int(10), FirstName varchar(20),LastName varchar(20), Address varchar(100),
+ PhoneNo int(10), DOB datetime, POC varchar(20),StateID int(10));
+insert into AccountHolder values(1 , 'Anya' , 'Lukose', 'Marlborough, MA','401123456','1990-01-14','10','123456');
+insert into AccountHolder values(2, 'Brigham' , 'Cruise' , 'Boston, MA');
+#create table BankBranch(BranchCode int(5), BranchName varchar(20), PhNo Int(10));
+insert into BankBranch values(1000, 'Framingham', '1800109109');
+#create table AccountHolder(CustID int(10), FirstName varchar(20),LastName varchar(20), Address varchar(100), PhoneNo int(10), DOB datetime, POC varchar(20),StateID int(10), BranchCode int(5));
+# create table Account(AccountType Varchar(10), AccountNumber int(10), CustID int(10), BalanceinUSD DECIMAL(20), 
+InterestRate decimal(4));
+insert into Account values('Savings', 512512, 1, 15000, 0.5);
+# create table Employee(EmployeeID int(6), EmployeeName varchar(20), EmployeeDesignation varchar(10),
+EmployeeSecretCode varchar(5)); 
+insert into Employee(10, 'Andrew M', 'AccountManager', 'JanAnd');
+# Create table NetBanking(UserID varchar(6), UserPwd varchar(6), CustID int(10));
+insert into NetBanking values ('An123','Password123',1);
+/*
+sqlite> select * from Bank;
+code|bankname|address|phno
+11111|DE Bank|headoffice ln, Cambridge, MA|1800010101
+
+
+sqlite> select * from AccountHolder;
+CustID|FirstName|LastName|Address|PhoneNo|DOB|POC|StateID|BranchCode
+1|Anya|Lukose|Marlborough, MA|401123456|1990-01-14|10|123456|1000
+2|Brian|Herd|Marlborough, MA|401123123|1991-05-14|20|123478|2000
+
+sqlite> select * from Account;;
+AccountType|AccountNumber|CustID|BalanceinUSD|InterestRate
+Savings|512512|1|15000|0.5
+Current|512412|1|10000|0.5
+Savings|512524|2|10000|0.5
+Current|512424|2|1000|0
+sqlite> select * from Employee
+   ...> ;
+EmployeeID|EmployeeName|EmployeeDesignation|EmployeeSecretCode
+10|Andrew M|AccountManager|JanAnd
+20|Nibha S|AccountManager|JanNib
+30|Bani K|CustomerCare|JanBan
+
+sqlite> select * from BankBranch;
+BranchCode|BranchName|PhNo
+1000|Framingham|1800109109
+2000|Shrewsbury|1800109209
+
+sqlite> select * from NetBanking;
+UserID|UserPwd|CustID
+An123|Password123|1
+BrigCr12|Password234|2
+*/
