@@ -130,12 +130,8 @@ class AccountHolder:
         custinput = int(input())
         found = 0
         for each in self.allaccountsdict:
-            if (int(each['AccountNumber']) == custinput) & (each['AccountType'] == 'Savings'):
-                acchandle= SavingsAccount(int(each['AccountNumber']))
-                found=1
-                break
-            elif (int(each['AccountNumber']) == custinput) & (each['AccountType'] == 'Current'):
-                acchandle= CurrentAccount(int(each['AccountNumber']))
+            if (int(each['AccountNumber']) == custinput):
+                acchandle= Account(int(each['AccountNumber']))
                 found=1
                 break
         if found == 0:
@@ -232,17 +228,10 @@ class Account:
         print("Transaction succesfull")
         print("Final balance: %s" %self.accdetailsdict[0]['BalanceinUSD'])
         self.updatetransactionlog(self.accdetailsdict[0]['AccountNumber'],self.accdetailsdict[0]['BalanceinUSD']-amt,'Credit',self.accdetailsdict[0]['BalanceinUSD'])        
-class SavingsAccount(Account):
-    """
-    Inherits Account class. HAs an additional method 'withdraw' which follows the savings account min balance rule.
-    Savings account needs a minimum balance of 1000USD. 
-
-    Attributes:
-    Inherits attributes of Account Class.
-    """
     def withdraw(self,amt):
         """
-        Lets user withdraw an amount specified but only if final balance is >= 1000. 
+        Lets user withdraw an amount specified. For savings account, balance should be a min of 1000.
+        For current account, no min balance required. It should not go negative though. 
         Displays if transaction is succesful after commiting.
 
         Args:
@@ -251,37 +240,12 @@ class SavingsAccount(Account):
         Returns:
         None
         """
-        if self.accdetailsdict[0]['BalanceinUSD'] - amt < 1000:
-            print("not enough funds, min balance limit reached")
-        else:
-            self.accdetailsdict[0]['BalanceinUSD'] = self.accdetailsdict[0]['BalanceinUSD'] - amt
-            c=dbcon.cursor()
-            c.execute("update Account set BalanceinUSD = ? where AccountNumber=?",(self.accdetailsdict[0]['BalanceinUSD'],self.accdetailsdict[0]['AccountNumber']))
-            dbcon.commit()
-            print("Transaction succesfull")
-            print("Remaining balance: %s" %self.accdetailsdict[0]['BalanceinUSD'])
-            self.updatetransactionlog(self.accdetailsdict[0]['AccountNumber'],self.accdetailsdict[0]['BalanceinUSD']+amt,'Debit',self.accdetailsdict[0]['BalanceinUSD'])
-class CurrentAccount(Account):
-    """
-    Inherits Account class. HAs an additional method 'withdraw' which follows the current account min balance rule.
-    Current account allows to withdraw any amt as long as final balance is not negative. 
-
-    Attributes:
-    Inherits attributes of Account Class.
-    """
-    def withdraw(self,amt):
-        """
-        Lets user withdraw an amount specified but only if final balance is >= 0. 
-        Displays if transaction is succesful after commiting.
-
-        Args:
-        self, amt
-
-        Returns:
-        None
-        """
-        if self.accdetailsdict[0]['BalanceinUSD'] - amt < 0:
-            print("not enough funds, enter a smaller amount")
+        if self.accdetailsdict[0]['AccountType'] == 'Savings':
+            if self.accdetailsdict[0]['BalanceinUSD'] - amt < 1000:
+                print("not enough funds, min balance limit reached")
+        elif self.accdetailsdict[0]['AccountType'] == 'Current':
+            if self.accdetailsdict[0]['BalanceinUSD'] - amt < 0:
+                print("not enough funds, min balance limit reached")
         else:
             self.accdetailsdict[0]['BalanceinUSD'] = self.accdetailsdict[0]['BalanceinUSD'] - amt
             c=dbcon.cursor()
@@ -550,8 +514,3 @@ except:
     print("Something went wrong in main logic")
 finally:
     dbcon.close()
-
-
-    
-
- 
